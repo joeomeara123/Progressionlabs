@@ -22,8 +22,8 @@
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Favicon (inline SVG as data URI) -->
-  <link rel="icon" href="data:image/svg+xml,<svg viewBox='0 0 20 36' xmlns='http://www.w3.org/2000/svg'><path d='M0,0 H8 A12,12,0,0,1,8,24 V36 H0 Z M8,7 A5,5,0,0,1,8,17 Z' fill='black' fill-rule='evenodd'/></svg>">
+  <!-- Favicon -->
+  <link rel="icon" href="logo-black.png" type="image/png">
 </head>
 <body>
 
@@ -33,9 +33,7 @@
   <nav class="nav" id="nav">
     <div class="nav-container">
       <a href="/" class="nav-logo" aria-label="Progression Labs home">
-        <svg viewBox="0 0 20 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M0,0 H8 A12,12,0,0,1,8,24 V36 H0 Z M8,7 A5,5,0,0,1,8,17 Z" fill="currentColor" fill-rule="evenodd"/>
-        </svg>
+        <img src="logo-black.png" alt="Progression Labs" class="nav-logo-img" width="36" height="24">
         <span class="nav-wordmark">Progression Labs</span>
       </a>
 
@@ -351,121 +349,51 @@
   </section>
 
   <!-- ========================================
-       PRICING
+       ENGAGEMENT MODELS
        ======================================== -->
   <section class="section" id="pricing">
     <div class="container">
-      <div class="section-header fade-up" style="text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
-        <p class="label">Pricing</p>
-        <h2>Transparent pricing,<br>exceptional value</h2>
-        <p>Choose the engagement model that fits your organization. All prices in USD.</p>
+      <div class="section-header fade-up" style="text-align: center; max-width: 640px; margin-left: auto; margin-right: auto;">
+        <p class="label">Engagement Models</p>
+        <h2>How we work with you</h2>
       </div>
 
       <div class="pricing-grid">
-        <!-- Advisory Tier -->
+        <!-- Strategic Advisory -->
         <div class="pricing-card fade-up">
-          <div class="pricing-tier">Advisory</div>
-          <div class="pricing-price">$5,000<span style="font-size: 0.5em; font-weight: 400; color: var(--text-tertiary);">/mo</span></div>
-          <div class="pricing-period">Starting price, billed monthly</div>
-          <p class="pricing-description">Strategic AI consultancy, business transformation advisory, and organizational change management for teams beginning their AI journey.</p>
-          <div class="pricing-features">
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Dedicated AI strategy consultant</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Business analysis &amp; AI readiness assessment</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Digital transformation roadmap</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Monthly strategy reviews</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Executive workshops &amp; training</span>
-            </div>
+          <div class="pricing-tier">Strategic Advisory</div>
+          <p class="pricing-description">Expert-led AI strategy, digital transformation roadmapping, and business consultancy — from assessment through implementation.</p>
+          <div class="pricing-engagement">
+            <span class="pricing-engagement-label">Typical engagements from</span>
+            <span class="pricing-engagement-value">$25,000</span>
           </div>
-          <a href="#contact" class="btn btn-ghost" style="width: 100%; text-align: center;">Contact sales</a>
+          <a href="#contact" class="service-link" style="margin-top: auto;">Schedule a consultation &rarr;</a>
         </div>
 
-        <!-- Platform Tier -->
-        <div class="pricing-card featured fade-up">
-          <div class="pricing-badge">Most Popular</div>
-          <div class="pricing-tier">Platform</div>
-          <div class="pricing-price">$2,500<span style="font-size: 0.5em; font-weight: 400; color: var(--text-tertiary);">/mo</span></div>
-          <div class="pricing-period">Per workspace, billed annually</div>
-          <p class="pricing-description">Full platform access with AI agent orchestration, analytics dashboards, integration hub, and technical support services for your team.</p>
-          <div class="pricing-features">
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Unlimited AI agent deployments</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Analytics dashboard &amp; reporting</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>200+ integrations</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Help desk &amp; technical support</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>99.9% uptime SLA</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>SOC 2 Type II compliant</span>
-            </div>
+        <!-- Managed AI Operations -->
+        <div class="pricing-card fade-up">
+          <div class="pricing-tier">Managed AI Operations</div>
+          <p class="pricing-description">Ongoing platform access, AI agent orchestration, technical support, and dedicated engineering — your AI team on demand.</p>
+          <div class="pricing-engagement">
+            <span class="pricing-engagement-label">Typical engagements from</span>
+            <span class="pricing-engagement-value">$50,000</span>
           </div>
-          <a href="#get-started" class="btn btn-primary" style="width: 100%; text-align: center;">Start free trial</a>
+          <a href="#contact" class="service-link" style="margin-top: auto;">Talk to our team &rarr;</a>
         </div>
 
-        <!-- Enterprise Tier -->
+        <!-- Enterprise Transformation -->
         <div class="pricing-card fade-up">
-          <div class="pricing-tier">Enterprise</div>
-          <div class="pricing-price">Custom</div>
-          <div class="pricing-period">Tailored to your organization</div>
-          <p class="pricing-description">Dedicated engineering team, custom software development, managed AI operations, and computer technology consultancy for large-scale deployments.</p>
-          <div class="pricing-features">
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Everything in Platform</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Dedicated engineering team</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Custom AI model development</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>On-premise deployment option</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>24/7 priority support</span>
-            </div>
-            <div class="pricing-feature">
-              <span class="pricing-check">&check;</span>
-              <span>Custom SLA &amp; compliance</span>
-            </div>
+          <div class="pricing-tier">Enterprise Transformation</div>
+          <p class="pricing-description">Full-scale digital transformation programs combining business consultancy, custom software development, and managed AI platforms.</p>
+          <div class="pricing-engagement">
+            <span class="pricing-engagement-label">Scoping</span>
+            <span class="pricing-engagement-value">Custom</span>
           </div>
-          <a href="#contact" class="btn btn-dark" style="width: 100%; text-align: center;">Talk to us</a>
+          <a href="#contact" class="service-link" style="margin-top: auto;">Request a proposal &rarr;</a>
         </div>
       </div>
 
-      <p class="pricing-note fade-in">All prices in USD. Custom packages available. Volume discounts for multi-year commitments.</p>
+      <p class="pricing-note fade-in">All engagements priced in USD. Every project is scoped to your organization's needs.</p>
     </div>
   </section>
 
@@ -527,9 +455,7 @@
       <div class="footer-grid">
         <!-- Brand column -->
         <div class="footer-brand">
-          <svg viewBox="0 0 20 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M0,0 H8 A12,12,0,0,1,8,24 V36 H0 Z M8,7 A5,5,0,0,1,8,17 Z" fill="currentColor" fill-rule="evenodd"/>
-          </svg>
+          <img src="logo-white.png" alt="Progression Labs" class="footer-logo-img" width="36" height="24">
           <div class="footer-brand-name">Progression Labs</div>
           <p class="footer-brand-desc">AI consultancy and technology partner. We build production-ready artificial intelligence systems, provide strategic business advisory, and operate managed AI platforms for enterprise clients.</p>
           <a href="https://twitter.com/WeAreProgression" class="footer-social-handle" target="_blank" rel="noopener">@WeAreProgression</a>

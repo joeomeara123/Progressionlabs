@@ -253,10 +253,10 @@ p {
   flex-shrink: 0;
 }
 
-.nav-logo svg {
-  width: 20px;
-  height: 36px;
-  color: var(--black);
+.nav-logo-img {
+  height: 24px;
+  width: auto;
+  display: block;
 }
 
 .nav-wordmark {
@@ -841,6 +841,28 @@ p {
   margin-top: 2px;
 }
 
+.pricing-engagement {
+  margin: 24px 0 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-light);
+}
+
+.pricing-engagement-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+  letter-spacing: 0.01em;
+}
+
+.pricing-engagement-value {
+  display: block;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
 .pricing-note {
   text-align: center;
   font-size: 14px;
@@ -937,10 +959,10 @@ p {
   margin-bottom: 64px;
 }
 
-.footer-brand svg {
-  width: 20px;
-  height: 36px;
-  color: var(--white);
+.footer-logo-img {
+  height: 24px;
+  width: auto;
+  display: block;
   margin-bottom: 12px;
 }
 
