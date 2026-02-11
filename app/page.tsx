@@ -171,25 +171,6 @@ export default function Home() {
         })
       })
 
-      // Pricing cards stagger
-      const pricingCards = document.querySelectorAll('.pricing-card')
-      if (pricingCards.length) {
-        gsap.fromTo(pricingCards,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.15,
-            scrollTrigger: {
-              trigger: pricingCards[0],
-              start: 'top 80%',
-              toggleActions: 'play none none none'
-            }
-          }
-        )
-      }
-
       // Resource cards stagger
       const resourceCards = document.querySelectorAll('.resource-card')
       if (resourceCards.length) {
@@ -256,8 +237,6 @@ export default function Home() {
           <div className="nav-links">
             <a href="#services">Services</a>
             <a href="#platform">Platform</a>
-            <a href="#case-studies">Case Studies</a>
-            <a href="#pricing">Pricing</a>
             <a href="#resources">Resources</a>
           </div>
 
@@ -278,8 +257,6 @@ export default function Home() {
       <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`} id="mobile-menu">
         <a href="#services" onClick={closeMobileMenu}>Services</a>
         <a href="#platform" onClick={closeMobileMenu}>Platform</a>
-        <a href="#case-studies" onClick={closeMobileMenu}>Case Studies</a>
-        <a href="#pricing" onClick={closeMobileMenu}>Pricing</a>
         <a href="#resources" onClick={closeMobileMenu}>Resources</a>
         <a href="#login" className="btn btn-ghost" onClick={closeMobileMenu}>Log in</a>
         <a href="#get-started" className="btn btn-primary" onClick={closeMobileMenu}>Get Started</a>
@@ -299,22 +276,6 @@ export default function Home() {
           <div className="hero-gradient" aria-hidden="true"></div>
         </div>
         <div className="gradient-bar" aria-hidden="true"></div>
-      </section>
-
-      {/* Partners */}
-      <section className="partners" id="case-studies">
-        <div className="container">
-          <p className="label fade-in">Trusted by leading enterprises</p>
-          <div className="partners-logos fade-in">
-            <span className="partner-logo">Deloitte</span>
-            <span className="partner-logo">Accenture</span>
-            <span className="partner-logo">KPMG</span>
-            <span className="partner-logo">Barclays</span>
-            <span className="partner-logo">Unilever</span>
-            <span className="partner-logo">AstraZeneca</span>
-            <span className="partner-logo">Rolls-Royce</span>
-          </div>
-        </div>
       </section>
 
       {/* Services */}
@@ -551,50 +512,6 @@ export default function Home() {
             <blockquote>&ldquo;Progression Labs transformed how we approach AI — from experimental pilots to production systems that drive real business value. Their consultancy expertise combined with their technology platform is unmatched.&rdquo;</blockquote>
             <cite>— VP of Technology, Enterprise Client</cite>
           </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section className="section" id="pricing">
-        <div className="container">
-          <div className="section-header fade-up" style={{ textAlign: 'center', maxWidth: '640px', marginLeft: 'auto', marginRight: 'auto' }}>
-            <p className="label">Engagement Models</p>
-            <h2>How we work with you</h2>
-          </div>
-
-          <div className="pricing-grid">
-            <div className="pricing-card fade-up">
-              <div className="pricing-tier">Strategic Advisory</div>
-              <p className="pricing-description">Expert-led AI strategy, digital transformation roadmapping, and business consultancy — from assessment through implementation.</p>
-              <div className="pricing-engagement">
-                <span className="pricing-engagement-label">Typical engagements from</span>
-                <span className="pricing-engagement-value">$25,000</span>
-              </div>
-              <a href="#contact" className="service-link" style={{ marginTop: 'auto' }}>Schedule a consultation &rarr;</a>
-            </div>
-
-            <div className="pricing-card fade-up">
-              <div className="pricing-tier">Managed AI Operations</div>
-              <p className="pricing-description">Ongoing platform access, AI agent orchestration, technical support, and dedicated engineering — your AI team on demand.</p>
-              <div className="pricing-engagement">
-                <span className="pricing-engagement-label">Typical engagements from</span>
-                <span className="pricing-engagement-value">$50,000</span>
-              </div>
-              <a href="#contact" className="service-link" style={{ marginTop: 'auto' }}>Talk to our team &rarr;</a>
-            </div>
-
-            <div className="pricing-card fade-up">
-              <div className="pricing-tier">Enterprise Transformation</div>
-              <p className="pricing-description">Full-scale digital transformation programs combining business consultancy, custom software development, and managed AI platforms.</p>
-              <div className="pricing-engagement">
-                <span className="pricing-engagement-label">Scoping</span>
-                <span className="pricing-engagement-value">Custom</span>
-              </div>
-              <a href="#contact" className="service-link" style={{ marginTop: 'auto' }}>Request a proposal &rarr;</a>
-            </div>
-          </div>
-
-          <p className="pricing-note fade-in">All engagements priced in USD. Every project is scoped to your organization&apos;s needs.</p>
         </div>
       </section>
 
