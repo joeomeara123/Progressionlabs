@@ -1072,6 +1072,12 @@ p {
   transform: translateX(40px);
 }
 
+/* Animated state */
+.animated {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
 /* --- 17. Responsive --- */
 @media (max-width: 1024px) {
   .services-grid {

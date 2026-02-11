@@ -1,0 +1,702 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
+
+export default function Home() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    // Dynamic import for GSAP to avoid SSR issues
+    const initAnimations = async () => {
+      const gsap = (await import('gsap')).default
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+
+      gsap.registerPlugin(ScrollTrigger)
+
+      gsap.defaults({
+        ease: 'power2.out',
+        duration: 0.8
+      })
+
+      // Hero animations
+      const heroTimeline = gsap.timeline({ delay: 0.2 })
+      heroTimeline
+        .fromTo('.hero-title',
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+        )
+        .fromTo('.hero-subtitle',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          '-=0.5'
+        )
+        .fromTo('.hero-actions',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          '-=0.4'
+        )
+        .fromTo('.gradient-bar',
+          { scaleX: 0, transformOrigin: 'left center' },
+          { scaleX: 1, duration: 1.2, ease: 'power2.inOut' },
+          '-=0.3'
+        )
+
+      // Fade up animations
+      const fadeUpElements = document.querySelectorAll('.fade-up:not(.hero-title):not(.hero-subtitle):not(.hero-actions)')
+      fadeUpElements.forEach((el) => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          }
+        )
+      })
+
+      // Fade in animations
+      document.querySelectorAll('.fade-in').forEach((el) => {
+        gsap.fromTo(el,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 0.8,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          }
+        )
+      })
+
+      // Service cards stagger
+      const serviceCards = document.querySelectorAll('.service-card')
+      if (serviceCards.length) {
+        const rows: Element[][] = []
+        let currentRow: Element[] = []
+        serviceCards.forEach((card, i) => {
+          currentRow.push(card)
+          if (currentRow.length === 3 || i === serviceCards.length - 1) {
+            rows.push([...currentRow])
+            currentRow = []
+          }
+        })
+
+        rows.forEach((row) => {
+          gsap.fromTo(row,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              stagger: 0.12,
+              scrollTrigger: {
+                trigger: row[0],
+                start: 'top 85%',
+                toggleActions: 'play none none none'
+              }
+            }
+          )
+        })
+      }
+
+      // Slide animations
+      document.querySelectorAll('.slide-left').forEach((el, i) => {
+        gsap.fromTo(el,
+          { opacity: 0, x: -40 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.7,
+            delay: i * 0.1,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          }
+        )
+      })
+
+      document.querySelectorAll('.slide-right').forEach((el) => {
+        gsap.fromTo(el,
+          { opacity: 0, x: 40 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          }
+        )
+      })
+
+      // Metric count-up
+      const metricValues = document.querySelectorAll('.metric-value')
+      metricValues.forEach((el) => {
+        const htmlEl = el as HTMLElement
+        const target = parseFloat(htmlEl.dataset.count || '0')
+        const suffix = htmlEl.dataset.suffix || ''
+        const isDecimal = htmlEl.dataset.decimal === 'true'
+
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            const obj = { val: 0 }
+            gsap.to(obj, {
+              val: target,
+              duration: 2,
+              ease: 'power2.out',
+              onUpdate: () => {
+                if (isDecimal) {
+                  htmlEl.textContent = obj.val.toFixed(1) + suffix
+                } else {
+                  htmlEl.textContent = Math.round(obj.val) + suffix
+                }
+              }
+            })
+          }
+        })
+      })
+
+      // Pricing cards stagger
+      const pricingCards = document.querySelectorAll('.pricing-card')
+      if (pricingCards.length) {
+        gsap.fromTo(pricingCards,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: pricingCards[0],
+              start: 'top 80%',
+              toggleActions: 'play none none none'
+            }
+          }
+        )
+      }
+
+      // Resource cards stagger
+      const resourceCards = document.querySelectorAll('.resource-card')
+      if (resourceCards.length) {
+        gsap.fromTo(resourceCards,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.12,
+            scrollTrigger: {
+              trigger: resourceCards[0],
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          }
+        )
+      }
+
+      // Mockup bars animation
+      const mockupBars = document.querySelectorAll('.mockup-card-bar-fill')
+      mockupBars.forEach((bar) => {
+        const htmlBar = bar as HTMLElement
+        const targetWidth = htmlBar.style.width
+        htmlBar.style.width = '0%'
+
+        ScrollTrigger.create({
+          trigger: bar,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            gsap.to(bar, {
+              width: targetWidth,
+              duration: 1.2,
+              ease: 'power2.out',
+              delay: 0.3
+            })
+          }
+        })
+      })
+    }
+
+    initAnimations()
+  }, [])
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false)
+  }
+
+  return (
+    <>
+      {/* Navigation */}
+      <nav className="nav" id="nav">
+        <div className="nav-container">
+          <a href="/" className="nav-logo" aria-label="Progression Labs home">
+            <Image src="/logo-black.png" alt="Progression Labs" className="nav-logo-img" width={36} height={24} />
+            <span className="nav-wordmark">Progression Labs</span>
+          </a>
+
+          <div className="nav-links">
+            <a href="#services">Services</a>
+            <a href="#platform">Platform</a>
+            <a href="#case-studies">Case Studies</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#resources">Resources</a>
+          </div>
+
+          <div className="nav-actions">
+            <a href="#login" className="nav-login">Log in</a>
+            <a href="#get-started" className="nav-cta">Get Started</a>
+          </div>
+
+          <button className="nav-mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" onClick={toggleMobileMenu}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`} id="mobile-menu">
+        <a href="#services" onClick={closeMobileMenu}>Services</a>
+        <a href="#platform" onClick={closeMobileMenu}>Platform</a>
+        <a href="#case-studies" onClick={closeMobileMenu}>Case Studies</a>
+        <a href="#pricing" onClick={closeMobileMenu}>Pricing</a>
+        <a href="#resources" onClick={closeMobileMenu}>Resources</a>
+        <a href="#login" className="btn btn-ghost" onClick={closeMobileMenu}>Log in</a>
+        <a href="#get-started" className="btn btn-primary" onClick={closeMobileMenu}>Get Started</a>
+      </div>
+
+      {/* Hero Section */}
+      <section className="hero section" id="hero">
+        <div className="container">
+          <div className="hero-content">
+            <h1 className="hero-title fade-up">AI systems that work<br />in production — not<br />just in demos.</h1>
+            <p className="hero-subtitle fade-up">Progression Labs is an AI consultancy and technology partner delivering business transformation through production-ready artificial intelligence systems, strategic advisory, and managed AI platforms.</p>
+            <div className="hero-actions fade-up">
+              <a href="#contact" className="btn btn-primary btn-lg">Talk to an expert</a>
+              <a href="#platform" className="btn btn-ghost btn-lg">Explore the platform</a>
+            </div>
+          </div>
+          <div className="hero-gradient" aria-hidden="true"></div>
+        </div>
+        <div className="gradient-bar" aria-hidden="true"></div>
+      </section>
+
+      {/* Partners */}
+      <section className="partners" id="case-studies">
+        <div className="container">
+          <p className="label fade-in">Trusted by leading enterprises</p>
+          <div className="partners-logos fade-in">
+            <span className="partner-logo">Deloitte</span>
+            <span className="partner-logo">Accenture</span>
+            <span className="partner-logo">KPMG</span>
+            <span className="partner-logo">Barclays</span>
+            <span className="partner-logo">Unilever</span>
+            <span className="partner-logo">AstraZeneca</span>
+            <span className="partner-logo">Rolls-Royce</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="section" id="services">
+        <div className="container">
+          <div className="section-header fade-up">
+            <p className="label">What we do</p>
+            <h2>End-to-end AI consultancy<br />and technology services</h2>
+            <p>From strategic advisory and business planning to custom software development and AI-as-a-Service platforms — we bridge the gap between ambition and production.</p>
+          </div>
+
+          <div className="services-grid">
+            {/* Business & Strategy Divider */}
+            <div className="services-divider">
+              <span className="label">Business &amp; Strategy</span>
+              <hr />
+            </div>
+
+            {/* Service 1 */}
+            <div className="service-card fade-up">
+              <div className="service-icon service-icon-strategy">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 1L12.5 6.5L18.5 7.5L14 12L15 18L10 15.5L5 18L6 12L1.5 7.5L7.5 6.5L10 1Z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                </svg>
+              </div>
+              <h4>Digital Transformation Advisory</h4>
+              <p>Business consultancy services for digital transformation, business planning, and organizational change management. We help enterprises navigate the strategic complexities of AI adoption.</p>
+              <a href="#" className="service-link">Learn more &rarr;</a>
+            </div>
+
+            {/* Service 2 */}
+            <div className="service-card fade-up">
+              <div className="service-icon service-icon-analytics">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="1" y="8" width="4" height="11" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                  <rect x="8" y="4" width="4" height="15" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                  <rect x="15" y="1" width="4" height="18" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                </svg>
+              </div>
+              <h4>Business Intelligence &amp; Analytics</h4>
+              <p>Advisory services for business management, customer analysis, and marketing strategy powered by AI. We transform raw data into actionable intelligence for executive decision-making.</p>
+              <a href="#" className="service-link">Learn more &rarr;</a>
+            </div>
+
+            {/* Service 3 */}
+            <div className="service-card fade-up">
+              <div className="service-icon service-icon-roadmap">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 17L10 3L17 17H3Z" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
+                  <line x1="10" y1="9" x2="10" y2="13" stroke="currentColor" strokeWidth="1.5"/>
+                  <circle cx="10" cy="15" r="0.5" fill="currentColor"/>
+                </svg>
+              </div>
+              <h4>Strategic AI Roadmapping</h4>
+              <p>Professional business consultancy helping organizations plan, prioritize, and implement AI across their operations. Business analysis and strategic advisory for long-term competitive advantage.</p>
+              <a href="#" className="service-link">Learn more &rarr;</a>
+            </div>
+
+            {/* Technology & Engineering Divider */}
+            <div className="services-divider">
+              <span className="label">Technology &amp; Engineering</span>
+              <hr />
+            </div>
+
+            {/* Service 4 */}
+            <div className="service-card fade-up">
+              <div className="service-icon service-icon-platform">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="1" y="1" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.5"/>
+                  <circle cx="7" cy="7" r="2" stroke="currentColor" strokeWidth="1.5"/>
+                  <circle cx="13" cy="13" r="2" stroke="currentColor" strokeWidth="1.5"/>
+                  <line x1="9" y1="7" x2="13" y2="11" stroke="currentColor" strokeWidth="1.5"/>
+                </svg>
+              </div>
+              <h4>AI Platform &amp; AIaaS</h4>
+              <p>Artificial intelligence as a service featuring machine learning, data analytics, speech recognition, database management, and business analytics. Enterprise-grade AI infrastructure, managed for you.</p>
+              <a href="#" className="service-link">Learn more &rarr;</a>
+            </div>
+
+            {/* Service 5 */}
+            <div className="service-card fade-up">
+              <div className="service-icon service-icon-dev">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="6,5 2,10 6,15" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  <polyline points="14,5 18,10 14,15" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="12" y1="3" x2="8" y2="17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <h4>Custom Software Development</h4>
+              <p>Computer programming, software design, and writing of computer code tailored to your business challenges. From prototype to production — we build software that scales.</p>
+              <a href="#" className="service-link">Learn more &rarr;</a>
+            </div>
+
+            {/* Service 6 */}
+            <div className="service-card fade-up">
+              <div className="service-icon service-icon-research">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5"/>
+                  <line x1="12.5" y1="12.5" x2="18" y2="18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <h4>AI Research &amp; Consultancy</h4>
+              <p>Research in artificial intelligence technology, consultancy in AI technology, and technical support services. We solve the problems others can&apos;t — from computer vision to natural language understanding.</p>
+              <a href="#" className="service-link">Learn more &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform */}
+      <section className="section" id="platform" style={{ background: 'var(--white)' }}>
+        <div className="container">
+          <div className="platform-content">
+            <div className="platform-text">
+              <p className="label fade-up">The Progression Platform</p>
+              <h2 className="fade-up">One platform for enterprise AI operations</h2>
+              <p className="fade-up">Technology consultation, computer technology consultancy, and AI-powered analytics — unified in a single platform. Monitor, deploy, and scale your AI systems with confidence.</p>
+
+              <div className="platform-features">
+                <div className="platform-feature slide-left">
+                  <div className="platform-feature-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="5" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><circle cx="11" cy="11" r="3" stroke="currentColor" strokeWidth="1.5"/><line x1="7" y1="7" x2="9" y2="9" stroke="currentColor" strokeWidth="1.5"/></svg>
+                  </div>
+                  <div>
+                    <h4>AI Agent Orchestration</h4>
+                    <p>Design, deploy, and monitor AI agents across your organization with full observability and control.</p>
+                  </div>
+                </div>
+
+                <div className="platform-feature slide-left">
+                  <div className="platform-feature-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                  </div>
+                  <div>
+                    <h4>Data Pipeline Management</h4>
+                    <p>Automated data processing, machine learning model management, and continuous training pipelines.</p>
+                  </div>
+                </div>
+
+                <div className="platform-feature slide-left">
+                  <div className="platform-feature-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/><polyline points="4,10 7,6 10,8 13,4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                  <div>
+                    <h4>Analytics Dashboard</h4>
+                    <p>Business analytics, performance monitoring, and real-time reporting for all your AI operations.</p>
+                  </div>
+                </div>
+
+                <div className="platform-feature slide-left">
+                  <div className="platform-feature-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/><rect x="9" y="5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/><line x1="7" y1="8" x2="9" y2="8" stroke="currentColor" strokeWidth="1.5"/></svg>
+                  </div>
+                  <div>
+                    <h4>Integration Hub</h4>
+                    <p>Connect to 200+ enterprise tools and data sources. Seamless interoperability with your existing stack.</p>
+                  </div>
+                </div>
+              </div>
+
+              <a href="#login" className="platform-login-link fade-up">Log in to your dashboard &rarr;</a>
+            </div>
+
+            {/* Platform UI Mockup */}
+            <div className="platform-visual slide-right">
+              <div className="platform-mockup">
+                <div className="mockup-header">
+                  <div className="mockup-dot active"></div>
+                  <div className="mockup-dot"></div>
+                  <div className="mockup-dot"></div>
+                  <span className="mockup-title">Progression Platform</span>
+                </div>
+                <div className="mockup-grid">
+                  <div className="mockup-card">
+                    <div className="mockup-card-label">Active Agents</div>
+                    <div className="mockup-card-value">24</div>
+                    <div className="mockup-card-bar"><div className="mockup-card-bar-fill salmon" style={{ width: '78%' }}></div></div>
+                  </div>
+                  <div className="mockup-card">
+                    <div className="mockup-card-label">Accuracy</div>
+                    <div className="mockup-card-value">97.3%</div>
+                    <div className="mockup-card-bar"><div className="mockup-card-bar-fill orchid" style={{ width: '97%' }}></div></div>
+                  </div>
+                  <div className="mockup-card">
+                    <div className="mockup-card-label">API Calls</div>
+                    <div className="mockup-card-value">1.2M</div>
+                    <div className="mockup-card-bar"><div className="mockup-card-bar-fill blue" style={{ width: '65%' }}></div></div>
+                  </div>
+                  <div className="mockup-card">
+                    <div className="mockup-card-label">Cost Saved</div>
+                    <div className="mockup-card-value">$340K</div>
+                    <div className="mockup-card-bar"><div className="mockup-card-bar-fill black" style={{ width: '85%' }}></div></div>
+                  </div>
+                  <div className="mockup-sidebar">
+                    <span className="mockup-tag">NLP Pipeline</span>
+                    <span className="mockup-tag blue">Vision API</span>
+                    <span className="mockup-tag salmon">Forecasting</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Metrics */}
+      <section className="section section-dark" id="metrics">
+        <div className="container">
+          <div className="section-header fade-up" style={{ textAlign: 'center', maxWidth: '600px', marginLeft: 'auto', marginRight: 'auto' }}>
+            <p className="label">Results that speak</p>
+            <h2 style={{ color: 'var(--white)' }}>Measurable impact across every engagement</h2>
+          </div>
+
+          <div className="metrics-grid">
+            <div className="metric-card fade-up">
+              <div className="metric-value" data-count="50" data-suffix="+">0</div>
+              <div className="metric-label">Enterprise clients across 12 industries</div>
+            </div>
+            <div className="metric-card fade-up">
+              <div className="metric-value" data-count="3.2" data-suffix="x" data-decimal="true">0</div>
+              <div className="metric-label">Average ROI within first 12 months</div>
+            </div>
+            <div className="metric-card fade-up">
+              <div className="metric-value" data-count="47" data-suffix="%">0</div>
+              <div className="metric-label">Reduction in operational costs through AI automation</div>
+            </div>
+            <div className="metric-card fade-up">
+              <div className="metric-value" data-count="99.9" data-suffix="%" data-decimal="true">0</div>
+              <div className="metric-label">Platform uptime SLA</div>
+            </div>
+          </div>
+
+          <div className="testimonial fade-up">
+            <blockquote>&ldquo;Progression Labs transformed how we approach AI — from experimental pilots to production systems that drive real business value. Their consultancy expertise combined with their technology platform is unmatched.&rdquo;</blockquote>
+            <cite>— VP of Technology, Enterprise Client</cite>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="section" id="pricing">
+        <div className="container">
+          <div className="section-header fade-up" style={{ textAlign: 'center', maxWidth: '640px', marginLeft: 'auto', marginRight: 'auto' }}>
+            <p className="label">Engagement Models</p>
+            <h2>How we work with you</h2>
+          </div>
+
+          <div className="pricing-grid">
+            <div className="pricing-card fade-up">
+              <div className="pricing-tier">Strategic Advisory</div>
+              <p className="pricing-description">Expert-led AI strategy, digital transformation roadmapping, and business consultancy — from assessment through implementation.</p>
+              <div className="pricing-engagement">
+                <span className="pricing-engagement-label">Typical engagements from</span>
+                <span className="pricing-engagement-value">$25,000</span>
+              </div>
+              <a href="#contact" className="service-link" style={{ marginTop: 'auto' }}>Schedule a consultation &rarr;</a>
+            </div>
+
+            <div className="pricing-card fade-up">
+              <div className="pricing-tier">Managed AI Operations</div>
+              <p className="pricing-description">Ongoing platform access, AI agent orchestration, technical support, and dedicated engineering — your AI team on demand.</p>
+              <div className="pricing-engagement">
+                <span className="pricing-engagement-label">Typical engagements from</span>
+                <span className="pricing-engagement-value">$50,000</span>
+              </div>
+              <a href="#contact" className="service-link" style={{ marginTop: 'auto' }}>Talk to our team &rarr;</a>
+            </div>
+
+            <div className="pricing-card fade-up">
+              <div className="pricing-tier">Enterprise Transformation</div>
+              <p className="pricing-description">Full-scale digital transformation programs combining business consultancy, custom software development, and managed AI platforms.</p>
+              <div className="pricing-engagement">
+                <span className="pricing-engagement-label">Scoping</span>
+                <span className="pricing-engagement-value">Custom</span>
+              </div>
+              <a href="#contact" className="service-link" style={{ marginTop: 'auto' }}>Request a proposal &rarr;</a>
+            </div>
+          </div>
+
+          <p className="pricing-note fade-in">All engagements priced in USD. Every project is scoped to your organization&apos;s needs.</p>
+        </div>
+      </section>
+
+      {/* Resources */}
+      <section className="section" id="resources" style={{ background: 'var(--white)' }}>
+        <div className="container">
+          <div className="section-header fade-up">
+            <p className="label">Insights</p>
+            <h2>Latest thinking from<br />our team</h2>
+          </div>
+
+          <div className="resources-grid">
+            <a href="#" className="resource-card fade-up">
+              <span className="resource-category strategy">Strategy</span>
+              <h4>The Business Case for Production-Ready AI Systems</h4>
+              <p className="resource-meta">8 min read &middot; February 2026</p>
+            </a>
+
+            <a href="#" className="resource-card fade-up">
+              <span className="resource-category technology">Technology</span>
+              <h4>Digital Transformation in 2026: A Strategic Framework</h4>
+              <p className="resource-meta">12 min read &middot; January 2026</p>
+            </a>
+
+            <a href="#" className="resource-card fade-up">
+              <span className="resource-category case-study">Case Study</span>
+              <h4>From AI Experimentation to Enterprise Operations</h4>
+              <p className="resource-meta">6 min read &middot; January 2026</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section cta-section" id="contact">
+        <div className="container">
+          <div className="fade-up">
+            <p className="label">Get in touch</p>
+            <h2>Ready to transform your<br />business with AI?</h2>
+            <p>Whether you need strategic business consultancy, a managed AI platform, or custom technology solutions — our team of experts is ready to help you build AI systems that deliver real results.</p>
+            <a href="mailto:hello@progressionlabs.com" className="cta-email">hello@progressionlabs.com</a>
+          </div>
+          <div className="cta-actions fade-up">
+            <a href="#" className="btn btn-primary btn-lg">Schedule a consultation</a>
+            <a href="#" className="btn btn-ghost btn-lg">Request a demo</a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-grid">
+            <div className="footer-brand">
+              <Image src="/logo-white.png" alt="Progression Labs" className="footer-logo-img" width={36} height={24} />
+              <div className="footer-brand-name">Progression Labs</div>
+              <p className="footer-brand-desc">AI consultancy and technology partner. We build production-ready artificial intelligence systems, provide strategic business advisory, and operate managed AI platforms for enterprise clients.</p>
+              <a href="https://twitter.com/WeAreProgression" className="footer-social-handle" target="_blank" rel="noopener noreferrer">@WeAreProgression</a>
+              <div className="footer-wap-tagline">WeAreProgression&trade; — Where strategy meets intelligence.</div>
+            </div>
+
+            <div className="footer-column">
+              <h5>Services</h5>
+              <a href="#services">Digital Transformation Advisory</a>
+              <a href="#services">Business Intelligence &amp; Analytics</a>
+              <a href="#services">Strategic AI Roadmapping</a>
+              <a href="#services">AI Platform &amp; AIaaS</a>
+              <a href="#services">Custom Software Development</a>
+              <a href="#services">AI Research &amp; Consultancy</a>
+            </div>
+
+            <div className="footer-column">
+              <h5>Platform</h5>
+              <a href="#platform">AI Agent Orchestration</a>
+              <a href="#platform">Data Pipeline Management</a>
+              <a href="#platform">Analytics Dashboard</a>
+              <a href="#platform">Integration Hub</a>
+              <a href="#login">Log in</a>
+              <a href="#">Documentation</a>
+            </div>
+
+            <div className="footer-column">
+              <h5>Company</h5>
+              <a href="#">About</a>
+              <a href="#">Careers</a>
+              <a href="#resources">Blog</a>
+              <a href="#contact">Contact</a>
+              <a href="#">Security</a>
+              <a href="#">Status</a>
+            </div>
+          </div>
+
+          <div className="footer-bottom">
+            <span className="footer-copyright">&copy; 2026 Progression Labs. All rights reserved.</span>
+            <div className="footer-legal">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#">Cookie Policy</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </>
+  )
+}
