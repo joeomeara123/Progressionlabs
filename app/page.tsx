@@ -214,6 +214,76 @@ export default function Home() {
     }
 
     initAnimations()
+
+    // --- Mouse-reactive glow ---
+    const root = document.documentElement
+    const isTouch = 'ontouchstart' in window
+    let targetX = 50
+    let targetY = 50
+    let currentX = 50
+    let currentY = 50
+    const damping = 0.08
+    let driftAngle = 0
+    let animRunning = true
+
+    const onMouseMove = (e: MouseEvent) => {
+      targetX = (e.clientX / window.innerWidth) * 100
+      targetY = (e.clientY / window.innerHeight) * 100
+    }
+
+    if (!isTouch) {
+      document.addEventListener('mousemove', onMouseMove)
+    }
+
+    function animateGlow() {
+      if (!animRunning) return
+      if (isTouch) {
+        driftAngle += 0.0004
+        targetX = 50 + Math.sin(driftAngle) * 25
+        targetY = 50 + Math.cos(driftAngle * 0.7) * 20
+      }
+      currentX += (targetX - currentX) * damping
+      currentY += (targetY - currentY) * damping
+      root.style.setProperty('--mouse-x', currentX + '%')
+      root.style.setProperty('--mouse-y', currentY + '%')
+      requestAnimationFrame(animateGlow)
+    }
+    animateGlow()
+
+    // --- Grain opacity pulse ---
+    const grainEl = document.querySelector('.grain-overlay') as HTMLElement
+    if (grainEl) {
+      import('gsap').then(({ default: gsap }) => {
+        gsap.to(grainEl, {
+          opacity: 0.28,
+          duration: 4,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1
+        })
+      })
+    }
+
+    // --- Nav scroll state ---
+    const nav = document.getElementById('nav')
+    const heroSection = document.getElementById('hero')
+    const checkNav = () => {
+      if (!nav || !heroSection) return
+      const heroBottom = heroSection.offsetHeight
+      if (window.scrollY > heroBottom - 100) {
+        nav.classList.add('nav-scrolled')
+      } else {
+        nav.classList.remove('nav-scrolled')
+      }
+    }
+    window.addEventListener('scroll', checkNav, { passive: true })
+    checkNav()
+
+    return () => {
+      animRunning = false
+      document.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('scroll', checkNav)
+    }
   }, [])
 
   const toggleMobileMenu = () => {
